@@ -1,1 +1,2 @@
 # web-crawl-q-and-a
+This is a sample sample project used to learn openai models and APIs. Find the openai's example project [here](https://github.com/openai/openai-cookbook/tree/main/apps/web-crawl-q-and-a)
