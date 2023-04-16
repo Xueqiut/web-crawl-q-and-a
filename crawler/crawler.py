@@ -15,8 +15,8 @@ import numpy as np
 HTTP_URL_PATTERN = r'^https*://.+'
 
 # Define root domain to crawl
-domain = "openai.com"
-full_url = "https://openai.com/"
+domain = "example.com"
+full_url = "https://example.com"
 
 # Create a class to parse the HTML and get the hyperlinks
 class HyperlinkParser(HTMLParser):
@@ -79,7 +79,7 @@ def validate_domain_hyperlinks(local_domain, links):
     # Return the list of hyperlinks that are within the same domain
     return list(set(clean_links))
 
-def get_and_write_text(response, url, f):
+def get_and_write_text(response, url, local_domain):
     # Get the text from the URL using BeautifulSoup to pull data out of HTML files
     soup = BeautifulSoup(response, "html.parser")
 
@@ -91,7 +91,8 @@ def get_and_write_text(response, url, f):
         print("Unable to parse page " + url + " due to JavaScript being required")
     else:
         # Otherwise, write the text to the file in the text directory
-        f.write(text)
+        with open('text/' + local_domain + '/' + url[8:].replace("/", "_") + ".txt", "w", encoding="UTF-8") as f:
+            f.write(text)
 
 def create_local_dir(local_domain):
     text_dir = "text/"
@@ -124,8 +125,7 @@ def crawl(local_domain, url):
         links = None
         with requests.get(url) as response:
             # Save text from the url to a <url>.txt file
-            with open('text/' + local_domain + '/' + url[8:].replace("/", "_") + ".txt", "w", encoding="UTF-8") as f:
-                get_and_write_text(response.text, url, f)
+            get_and_write_text(response.text, url, local_domain)
 
             links = find_hyperlinks(response)
 
@@ -148,3 +148,6 @@ def main(full_url):
     create_local_dir(local_domain)
 
     crawl(local_domain, full_url)
+
+if __name__ == "__main__":
+    main(full_url)

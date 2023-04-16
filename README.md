@@ -10,5 +10,4 @@ Package set up
 # Unit test framework - pytest
 Run unit test
 - Run all the test cases with auto discovery: `poetry run pytest`
-- Run specific test cases group in a file
-- Run single test case
+- Run single test case: `poetry run pytest -k test_case_name`
